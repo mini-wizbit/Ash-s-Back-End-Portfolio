@@ -1,12 +1,15 @@
 const express = require("express");
 const { getCategories } = require("./Controllers/categories.controller");
 const { getReview } = require("./Controllers/reviews.controller");
+const { getUsers } = require("./Controllers/users.controller");
 
 const app = express();
 
 app.get("/api/categories", getCategories);
 
 app.get("/api/reviews/:review_id", getReview);
+
+app.get("/api/users", getUsers);
 
 app.all("/*", (req, res) => {
   return res.status(404).send({ msg: "Not Found" });
