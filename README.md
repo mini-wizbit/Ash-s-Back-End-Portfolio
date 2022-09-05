@@ -55,3 +55,7 @@ git branch -D <local branch>
 To ensure we are not commiting broken code this project makes use of git hooks. Git hooks are scripts triggered during certain events in the git lifecycle. Husky is a popular package which allows us to set up and maintain these scripts. This project makes use a _pre-commit hook_. When we attempt to commit our work, the script defined in the `pre-commit` file will run. If any of our tests fail than the commit will be aborted.
 
 The [Husky documentation](https://typicode.github.io/husky/#/) explains how to configure Husky for your own project as well as creating your own custom hooks.\_
+
+## Connecting to the databases
+
+You will need to create two files to access the database, both are env. files which are currently git ignored. The two files are env.development and env.test, in each of these you'll need to add to the first line PGDATABASE=<data_base_name>. In order to find these database names please look into the file ./db/setup.sql. After assigning please check that the files are ignored.
