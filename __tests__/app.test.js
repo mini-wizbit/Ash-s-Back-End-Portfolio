@@ -87,6 +87,18 @@ describe("Using app.js to run the database of NC-games", () => {
           );
         });
     });
+    test("400: ? GET/api/review/:review_id where the id = 9999", () => {
+      const review_id = 9999;
+      return request(app)
+        .get(`/api/reviews/${review_id}`)
+        .expect(400)
+        .then((response) => {
+          expect(response.body).toEqual({
+            status: 400,
+            msg: "Bad Request",
+          });
+        });
+    });
   });
   //Head describe DELETE later
 });
