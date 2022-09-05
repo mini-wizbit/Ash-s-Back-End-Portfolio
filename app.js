@@ -12,7 +12,7 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log(err, "< FIX IT NOW");
+  console.log(err, "< FIX IT NOW"); // <- seems cute, but might delete later
   res.status(500).send({ msg: "Internal Error" });
 });
 
