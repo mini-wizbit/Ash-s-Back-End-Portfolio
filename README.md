@@ -58,4 +58,4 @@ The [Husky documentation](https://typicode.github.io/husky/#/) explains how to c
 
 ## Connecting to the databases
 
-You will need to create two files to access the database, both are env. files which are currently git ignored. The two files are env.development and env.test, in each of these you'll need to add to the first line PGDATABASE=<data_base_name>. In order to find these database names please look into the file ./db/setup.sql. After assigning please check that the files are ignored.
+You will need to create two files to access the database, both are .env. files which are currently git ignored. The two files are .env.development and .env.test, in each of these you'll need to add to the first line PGDATABASE=<data_base_name>. In order to find these database names please look into the file ./db/setup.sql. After assigning please check that the files are ignored.
