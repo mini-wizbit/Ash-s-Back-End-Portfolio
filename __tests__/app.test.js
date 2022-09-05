@@ -32,6 +32,14 @@ describe("Using app.js to run the database of NC-games", () => {
           );
         });
     });
+    test("400: bad request from possible spelling mistake", () => {
+      return request(app)
+        .get("/api/cateogries")
+        .expect(404)
+        .then((response) => {
+          expect(response.body).toEqual({ msg: "Not Found" });
+        });
+    });
   });
 
   //Head describe DETETE later

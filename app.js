@@ -5,6 +5,10 @@ const app = express();
 
 app.get("/api/categories", getCategories);
 
+app.all("/*", (req, res) => {
+  return res.status(404).send({ msg: "Not Found" });
+});
+
 app.use((err, req, res, next) => {
   console.log(err, "< FIX IT NOW"); // <- seems cute, but might DELETE later
   res.status(500).send({ msg: "Internal Error" });
