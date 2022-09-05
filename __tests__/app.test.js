@@ -3,6 +3,7 @@ const { app } = require("../app.js");
 const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/");
+const { response } = require("express");
 
 afterAll(() => {
   return db.end();
@@ -32,7 +33,7 @@ describe("Using app.js to run the database of NC-games", () => {
           );
         });
     });
-    test("400: bad request from possible spelling mistake", () => {
+    test("404: Not Found from possible spelling mistake", () => {
       return request(app)
         .get("/api/cateogries")
         .expect(404)
@@ -41,6 +42,51 @@ describe("Using app.js to run the database of NC-games", () => {
         });
     });
   });
-
-  //Head describe DETETE later
+  describe("4: GET/api/reviews/:review_id", () => {
+    test("200: responds with a single matching review", () => {
+      const review_id = 2;
+      return request(app)
+        .get(`/api/reviews/${review_id}`)
+        .expect(200)
+        .then((response) => {
+          expect(response.body.game).toHaveProperty(
+            "review_id",
+            expect.any(Number)
+          );
+          expect(response.body.game).toHaveProperty(
+            "title",
+            expect.any(String)
+          );
+          expect(response.body.game).toHaveProperty(
+            "review_body",
+            expect.any(String)
+          );
+          expect(response.body.game).toHaveProperty(
+            "designer",
+            expect.any(String)
+          );
+          expect(response.body.game).toHaveProperty(
+            "review_img_url",
+            expect.any(String)
+          );
+          expect(response.body.game).toHaveProperty(
+            "votes",
+            expect.any(Number)
+          );
+          expect(response.body.game).toHaveProperty(
+            "category",
+            expect.any(String)
+          );
+          expect(response.body.game).toHaveProperty(
+            "owner",
+            expect.any(String)
+          );
+          expect(response.body.game).toHaveProperty(
+            "created_at",
+            expect.any(String)
+          );
+        });
+    });
+  });
+  //Head describe DELETE later
 });
