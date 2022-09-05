@@ -1,15 +1,9 @@
 const express = require("express");
+const { getCategories } = require("./Controllers/categories.controller");
 
 const app = express();
 
-// custom error <- DELETE this comment later on
-app.use((err, req, res, next) => {
-  if (err.status && err.msg) {
-    res.status(err.status).send(err);
-  } else {
-    next();
-  }
-});
+app.get("/api/categories", getCategories);
 
 app.use((err, req, res, next) => {
   console.log(err, "< FIX IT NOW"); // <- seems cute, but might DELETE later

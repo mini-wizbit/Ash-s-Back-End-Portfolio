@@ -3,25 +3,33 @@ const { app } = require("../app.js");
 const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/");
-const { response } = require("express");
 
 afterAll(() => {
-  db.end();
+  return db.end();
 });
 
 beforeEach(() => {
-  return seed(testData); // <- seeding each time DELETE COMMENT later!
+  return seed(testData);
 });
 
 describe("Using app.js to run the database of NC-games", () => {
   describe("GET api/categories will return an array of 'category' objects with the following properties: slug and description", () => {
-    test("when GET api/categories is called returns a array of objects", () => {
+    test("200: returns a array of objects", () => {
       return request(app)
         .get("/api/categories")
         .expect(200)
         .then((response) => {
           expect(Array.isArray(response.body.categories)).toBe(true);
           expect(response.body.categories.length > 0).toBe(true);
+          expect(
+            response.body.categories.forEach((category) => {
+              expect(category).toHaveProperty("slug", expect.any(String));
+              expect(category).toHaveProperty(
+                "description",
+                expect.any(String)
+              );
+            })
+          );
         });
     });
   });
