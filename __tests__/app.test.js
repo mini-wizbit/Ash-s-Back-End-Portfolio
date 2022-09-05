@@ -99,6 +99,15 @@ describe("Using app.js to run the database of NC-games", () => {
           });
         });
     });
+    test("404: Not Found from possible spelling mistake for reviews (safety netting)", () => {
+      const review_id = 2;
+      return request(app)
+        .get(`/api/reveiws/${review_id}`)
+        .expect(404)
+        .then((response) => {
+          expect(response.body).toEqual({ msg: "Not Found" });
+        });
+    });
   });
   //Head describe DELETE later
 });
