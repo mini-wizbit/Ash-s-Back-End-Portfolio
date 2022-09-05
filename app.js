@@ -2,7 +2,7 @@ const express = require("express");
 
 const app = express();
 
-// custom error <- delete this comment later on
+// custom error <- DELETE this comment later on
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
     res.status(err.status).send(err);
@@ -12,7 +12,7 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log(err, "< FIX IT NOW"); // <- seems cute, but might delete later
+  console.log(err, "< FIX IT NOW"); // <- seems cute, but might DELETE later
   res.status(500).send({ msg: "Internal Error" });
 });
 
