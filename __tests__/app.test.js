@@ -81,7 +81,7 @@ describe("Using app.js to run the database of NC-games", () => {
           });
         });
     });
-    test("400: ? GET/api/review/:review_id having a invalid name where the id = banaas", () => {
+    test("400: ? GET/api/review/:review_id where the id = banaas", () => {
       const review_id = "bananas";
       return request(app)
         .get(`/api/reviews/${review_id}`)
@@ -130,4 +130,5 @@ describe("Using app.js to run the database of NC-games", () => {
     });
   });
   //Head describe DELETE later!
+
 });
