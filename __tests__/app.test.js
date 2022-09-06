@@ -69,7 +69,7 @@ describe("Using app.js to run the database of NC-games", () => {
           );
         });
     });
-    test("400: ? GET/api/review/:review_id where the id = 9999", () => {
+    test("404: ? GET/api/review/:review_id where the id = 9999", () => {
       const review_id = 9999;
       return request(app)
         .get(`/api/reviews/${review_id}`)
