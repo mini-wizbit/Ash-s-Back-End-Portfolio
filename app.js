@@ -5,6 +5,8 @@ const { postReview } = require("./Controllers/reviews.post.controller");
 
 const app = express();
 
+app.use(express.json()); // <- this boy right here caused all my problems and made them disappear too!
+
 app.get("/api/categories", getCategories);
 
 app.get("/api/reviews/:review_id", getReview);

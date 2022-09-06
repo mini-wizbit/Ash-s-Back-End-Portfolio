@@ -130,15 +130,76 @@ describe("Using app.js to run the database of NC-games", () => {
     });
   });
   describe("6. PATCH/api/reviews/:reviews_id", () => {
-    test.skip("201: response with a board game object with a updated vote", () => {
-      const vote = { inc_votes: 2 };
+    test("201: response with a board game object with a updated vote", () => {
+      const updateVote = { votes: 2 };
       const review_id = 2;
       return request(app)
         .post(`/api/reviews/${review_id}`)
-        .send(vote)
+        .send(updateVote)
         .expect(201)
         .then(({ body }) => {
-          expect(body.votes).toBe(7);
+          expect(body.updatedData.votes).toBe(7);
+        });
+    });
+    test("201: response with a board game object with a updated vote this time with 100 votes added", () => {
+      const updateVote = { votes: 100 };
+      const review_id = 7;
+      return request(app)
+        .post(`/api/reviews/${review_id}`)
+        .send(updateVote)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.updatedData.votes).toBe(109);
+        });
+    });
+    test("201: response with a board game object with a updated vote, this time taking away votes", () => {
+      const updateVote = { votes: -6 };
+      const review_id = 7;
+      return request(app)
+        .post(`/api/reviews/${review_id}`)
+        .send(updateVote)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.updatedData.votes).toBe(3);
+        });
+    });
+    test("201: response with a board game object with a updated vote, this time taking away 100 votes and getting a negative vote number.", () => {
+      const updateVote = { votes: -100 };
+      const review_id = 7;
+      return request(app)
+        .post(`/api/reviews/${review_id}`)
+        .send(updateVote)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.updatedData.votes).toBe(-91);
+        });
+    });
+    test("ERROR handling... what if the review_id is 9999", () => {
+      const updateVote = { votes: 2 };
+      const review_id = 9999;
+      return request(app)
+        .post(`/api/reviews/${review_id}`)
+        .send(updateVote)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body).toEqual({
+            status: 404,
+            msg: "Not Found",
+          });
+        });
+    });
+    test("ERROR handling... what if the votes were apples?", () => {
+      const updateVote = { votes: "Apples" };
+      const review_id = 2;
+      return request(app)
+        .post(`/api/reviews/${review_id}`)
+        .send(updateVote)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body).toEqual({
+            status: 400,
+            msg: "Bad Request",
+          });
         });
     });
   });
