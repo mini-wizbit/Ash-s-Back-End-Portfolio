@@ -104,7 +104,7 @@ describe("Using app.js to run the database of NC-games", () => {
     });
   });
   describe("5: GET/api/users", () => {
-    test("200: response with a array of objects with users info", () => {
+    test.only("200: response with a array of objects with users info", () => {
       return request(app)
         .get("/api/users")
         .expect(200)
