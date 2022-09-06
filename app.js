@@ -1,17 +1,17 @@
 const express = require("express");
 const { getCategories } = require("./Controllers/categories.controller");
 const { getReview } = require("./Controllers/reviews.controller");
-const { postReview } = require("./Controllers/reviews.post.controller");
+const { patchReview } = require("./Controllers/reviews.patch.controller");
 
 const app = express();
 
-app.use(express.json()); // <- this boy right here caused all my problems and made them disappear too!
+app.use(express.json());
 
 app.get("/api/categories", getCategories);
 
 app.get("/api/reviews/:review_id", getReview);
 
-app.post("/api/reviews/:reviews_id", postReview);
+app.patch("/api/reviews/:reviews_id", patchReview);
 
 app.all("/*", (req, res) => {
   return res.status(404).send({ msg: "Not Found" });
