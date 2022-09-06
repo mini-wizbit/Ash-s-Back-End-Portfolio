@@ -120,7 +120,7 @@ describe("Using app.js to run the database of NC-games", () => {
           );
         });
     });
-    test.only("404: Not Found from possible spelling mistake in Users", () => {
+    test("404: Not Found from possible spelling mistake in Users", () => {
       return request(app)
         .get("/api/uses")
         .expect(404)
