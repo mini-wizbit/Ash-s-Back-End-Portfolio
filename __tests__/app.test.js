@@ -129,5 +129,18 @@ describe("Using app.js to run the database of NC-games", () => {
         });
     });
   });
+  describe("6. PATCH/api/reviews/:reviews_id", () => {
+    test.skip("201: response with a board game object with a updated vote", () => {
+      const vote = { inc_votes: 2 };
+      const review_id = 2;
+      return request(app)
+        .post(`/api/reviews/${review_id}`)
+        .send(vote)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.votes).toBe(7);
+        });
+    });
+  });
   //Head describe DELETE later
 });
