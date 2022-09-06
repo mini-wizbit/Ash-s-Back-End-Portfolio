@@ -69,7 +69,7 @@ describe("Using app.js to run the database of NC-games", () => {
           );
         });
     });
-    test("400: ? GET/api/review/:review_id where the id = 9999", () => {
+    test("404: ? GET/api/review/:review_id where the id = 9999", () => {
       const review_id = 9999;
       return request(app)
         .get(`/api/reviews/${review_id}`)
@@ -81,7 +81,7 @@ describe("Using app.js to run the database of NC-games", () => {
           });
         });
     });
-    test("400: ? GET/api/review/:review_id where the id = banaas", () => {
+    test("400: ? GET/api/review/:review_id having a invalid name where the id = banaas", () => {
       const review_id = "bananas";
       return request(app)
         .get(`/api/reviews/${review_id}`)
@@ -104,7 +104,7 @@ describe("Using app.js to run the database of NC-games", () => {
     });
   });
   describe("5: GET/api/users", () => {
-    test.only("200: response with a array of objects with users info", () => {
+    test("200: response with a array of objects with users info", () => {
       return request(app)
         .get("/api/users")
         .expect(200)
@@ -120,7 +120,7 @@ describe("Using app.js to run the database of NC-games", () => {
           );
         });
     });
-    test("404: Not Found from possible spelling mistake in Users", () => {
+    test.only("404: Not Found from possible spelling mistake in Users", () => {
       return request(app)
         .get("/api/uses")
         .expect(404)
