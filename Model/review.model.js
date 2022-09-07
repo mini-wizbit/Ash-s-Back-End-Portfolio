@@ -10,6 +10,16 @@ exports.selectReviewsById = (review_id) => {
         } else {
           return reviewOfIdNumber.rows[0];
         }
+      })
+      .then((reviewById) => {
+        const id = reviewById.review_id;
+        return db
+          .query("SELECT * FROM comments WHERE review_id = $1;", [id])
+          .then((results) => {
+            const numberOfComments = results.rows.length;
+            reviewById.comment_count = numberOfComments;
+            return reviewById;
+          });
       });
   } else {
     return Promise.reject({ status: 400, msg: "Bad Request" });

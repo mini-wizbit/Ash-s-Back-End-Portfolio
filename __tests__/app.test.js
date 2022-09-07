@@ -282,7 +282,7 @@ describe("Using app.js to run the database of NC-games", () => {
           expect(body.game).toHaveProperty("review_id", 2);
           expect(body.game).toHaveProperty("title", "Jenga");
           expect(body.game).toHaveProperty(
-            "reviewbody",
+            "review_body",
             "Fiddly fun for all the family"
           );
           expect(body.game).toHaveProperty("designer", "Leslie Scott");
@@ -297,7 +297,7 @@ describe("Using app.js to run the database of NC-games", () => {
             "created_at",
             "2021-01-18T10:01:41.251Z"
           );
-          expect(body.game).toHaveProperty("comment_count", 4); // I hope it was 4
+          expect(body.game).toHaveProperty("comment_count", 3);
         });
     });
     //next test
