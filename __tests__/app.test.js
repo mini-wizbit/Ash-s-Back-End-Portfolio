@@ -158,25 +158,6 @@ describe("Using app.js to run the database of NC-games", () => {
           );
         });
     });
-    test("200: response with a board game object with a updated vote this time with 100 votes added", () => {
-      const review = { votes: 100 };
-      const review_id = 7;
-      return request(app)
-        .patch(`/api/reviews/${review_id}`)
-        .send(review)
-        .expect(200)
-        .then(({ body }) => {
-          expect(body.review.votes).toBe(109);
-          expect(body.review).toHaveProperty("review_id", 7);
-          expect(body.review).toHaveProperty(
-            "title",
-            "Mollit elit qui incididunt veniam occaecat cupidatat"
-          );
-          expect(body.review).toHaveProperty("category", "social deduction");
-          expect(body.review).toHaveProperty("designer", "Avery Wunzboogerz");
-          expect(body.review).toHaveProperty("owner", "mallionaire");
-        });
-    });
     test("200: response with a board game object with a updated vote, this time taking away votes", () => {
       const review = { votes: -6 };
       const review_id = 7;
@@ -273,8 +254,4 @@ describe("Using app.js to run the database of NC-games", () => {
     });
   });
   //Head describe DELETE later
-
-
-
-
 });
