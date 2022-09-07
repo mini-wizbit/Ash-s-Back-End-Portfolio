@@ -4,7 +4,18 @@ exports.selectReviewPost = (review_id, patchInfo) => {
   const id = review_id.reviews_id;
   const toPatchThisKey = Object.keys(patchInfo)[0];
   const newValue = patchInfo[toPatchThisKey];
-
+  const validReviewKeys = [
+    "title",
+    "review_body",
+    "designer",
+    "review_img_url",
+    "votes",
+    "category",
+    "owner",
+  ];
+  if (!validReviewKeys.includes(toPatchThisKey)) {
+    return Promise.reject({ status: 400, msg: "Bad Request" });
+  }
   let update = "";
   if (typeof newValue === "number") {
     update = `${toPatchThisKey} + $1`;
