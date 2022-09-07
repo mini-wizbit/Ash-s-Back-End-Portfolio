@@ -1,13 +1,18 @@
 const express = require("express");
 const { getCategories } = require("./Controllers/categories.controller");
 const { getReview } = require("./Controllers/reviews.controller");
+const { patchReview } = require("./Controllers/reviews.patch.controller");
 const { getUsers } = require("./Controllers/users.controller");
 
 const app = express();
 
+app.use(express.json());
+
 app.get("/api/categories", getCategories);
 
 app.get("/api/reviews/:review_id", getReview);
+
+app.patch("/api/reviews/:reviews_id", patchReview);
 
 app.get("/api/users", getUsers);
 
@@ -18,6 +23,14 @@ app.all("/*", (req, res) => {
 app.use((err, req, res, next) => {
   if (err.status && err.msg) {
     res.status(err.status).send(err);
+  } else {
+    next(err);
+  }
+});
+
+app.use((err, req, res, next) => {
+  if (err.code === "22P02") {
+    res.status(400).send({ status: 400, msg: "Bad Request" });
   } else {
     next(err);
   }

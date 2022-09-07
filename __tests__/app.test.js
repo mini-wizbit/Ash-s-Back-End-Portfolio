@@ -129,6 +129,129 @@ describe("Using app.js to run the database of NC-games", () => {
         });
     });
   });
-  //Head describe DELETE later!
-
+  describe("6. PATCH/api/reviews/:reviews_id", () => {
+    test("200: response with a board game object with a updated vote", () => {
+      const review = { votes: 2 };
+      const review_id = 2;
+      return request(app)
+        .patch(`/api/reviews/${review_id}`)
+        .send(review)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.review.votes).toBe(7);
+          expect(body.review).toHaveProperty("review_id", 2);
+          expect(body.review).toHaveProperty("title", "Jenga");
+          expect(body.review).toHaveProperty(
+            "review_body",
+            "Fiddly fun for all the family"
+          );
+          expect(body.review).toHaveProperty("designer", "Leslie Scott");
+          expect(body.review).toHaveProperty(
+            "review_img_url",
+            "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png"
+          );
+          expect(body.review).toHaveProperty("category", "dexterity");
+          expect(body.review).toHaveProperty("owner", "philippaclaire9");
+          expect(body.review).toHaveProperty(
+            "created_at",
+            "2021-01-18T10:01:41.251Z"
+          );
+        });
+    });
+    test("200: response with a board game object with a updated vote, this time taking away votes", () => {
+      const review = { votes: -6 };
+      const review_id = 7;
+      return request(app)
+        .patch(`/api/reviews/${review_id}`)
+        .send(review)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.review.votes).toBe(3);
+          expect(body.review).toHaveProperty("review_id", 7);
+          expect(body.review).toHaveProperty(
+            "title",
+            "Mollit elit qui incididunt veniam occaecat cupidatat"
+          );
+          expect(body.review).toHaveProperty("category", "social deduction");
+          expect(body.review).toHaveProperty("designer", "Avery Wunzboogerz");
+          expect(body.review).toHaveProperty("owner", "mallionaire");
+        });
+    });
+    test("200: response with a board game object with a updated vote, this time taking away 100 votes and getting a negative vote number.", () => {
+      const review = { votes: -100 };
+      const review_id = 6;
+      return request(app)
+        .patch(`/api/reviews/${review_id}`)
+        .send(review)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.review.votes).toBe(-92);
+          expect(body.review).toHaveProperty("review_id", 6);
+          expect(body.review).toHaveProperty(
+            "title",
+            "Occaecat consequat officia in quis commodo."
+          );
+          expect(body.review).toHaveProperty("category", "social deduction");
+          expect(body.review).toHaveProperty("designer", "Ollie Tabooger");
+          expect(body.review).toHaveProperty("owner", "mallionaire");
+        });
+    });
+    test("ERROR handling... what if the review_id is 9999", () => {
+      const review = { votes: 2 };
+      const review_id = 9999;
+      return request(app)
+        .patch(`/api/reviews/${review_id}`)
+        .send(review)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body).toEqual({
+            status: 404,
+            msg: "Not Found",
+          });
+        });
+    });
+    test("ERROR handling... what if the votes were apples?", () => {
+      const review = { votes: "Apples" };
+      const review_id = 2;
+      return request(app)
+        .patch(`/api/reviews/${review_id}`)
+        .send(review)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body).toEqual({
+            status: 400,
+            msg: "Bad Request",
+          });
+        });
+    });
+    test("ERROR handling... what if the votes key is fruit", () => {
+      const review = { fruit: "Apples" };
+      const review_id = 2;
+      return request(app)
+        .patch(`/api/reviews/${review_id}`)
+        .send(review)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body).toEqual({
+            status: 400,
+            msg: "Bad Request",
+          });
+        });
+    });
+    test("ERROR handling... oh dear forgot to put something in the review...", () => {
+      const review = {};
+      const review_id = 2;
+      return request(app)
+        .patch(`/api/reviews/${review_id}`)
+        .send(review)
+        .expect(400)
+        .then(({ body }) => {
+          expect(body).toEqual({
+            status: 400,
+            msg: "Bad Request",
+          });
+        });
+    });
+  });
+  //Head describe DELETE later
 });
