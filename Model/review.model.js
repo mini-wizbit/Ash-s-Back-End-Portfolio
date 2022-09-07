@@ -15,11 +15,13 @@ exports.selectReviewsById = (review_id) => {
         const id = reviewById.review_id;
         return db
           .query(
-            "SELECT * FROM comments JOIN reviews ON reviews.review_id = comments.review_id WHERE reviews.review_id = 2;" // we now have a count
+            "SELECT COUNT(*) FROM reviews LEFT JOIN comments ON reviews.review_id = comments.review_id WHERE reviews.review_id = $1;",
+            [id]
           )
           .then((results) => {
-            console.log(results.rows, "< table in model");
-            //return reviewById;
+            const countNumber = parseInt(results.rows[0].count);
+            reviewById.comment_count = countNumber;
+            return reviewById;
           });
       });
   } else {
