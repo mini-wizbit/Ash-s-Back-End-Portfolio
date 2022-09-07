@@ -273,7 +273,7 @@ describe("Using app.js to run the database of NC-games", () => {
     });
   });
   describe("4: GET/api/reviews/:review_id now includes a comment_Count", () => {
-    test("200: responds with a single matching review", () => {
+    test("200: responds with a single matching review NOW with comment count", () => {
       const review_id = 2;
       return request(app)
         .get(`/api/reviews/${review_id}`)
@@ -300,7 +300,14 @@ describe("Using app.js to run the database of NC-games", () => {
           expect(body.game).toHaveProperty("comment_count", 3);
         });
     });
-    //next test
+    test("404: Not Found from possible spelling mistake", () => {
+      return request(app)
+        .get("/api/cateogries")
+        .expect(404)
+        .then((response) => {
+          expect(response.body).toEqual({ msg: "Not Found" });
+        });
+    });
   });
   //Head describe DELETE later
 });
