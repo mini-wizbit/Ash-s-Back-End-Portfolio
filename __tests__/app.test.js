@@ -196,7 +196,7 @@ describe("Using app.js to run the database of NC-games", () => {
           expect(body.review).toHaveProperty("owner", "mallionaire");
         });
     });
-    test.only("ERROR handling... what if the review_id is 9999", () => {
+    test("ERROR handling... what if the review_id is 9999", () => {
       const review = { votes: 2 };
       const review_id = 9999;
       return request(app)
@@ -204,7 +204,6 @@ describe("Using app.js to run the database of NC-games", () => {
         .send(review)
         .expect(404)
         .then(({ body }) => {
-          console.log(body, "< test side");
           expect(body).toEqual({
             status: 404,
             msg: "Not Found",
