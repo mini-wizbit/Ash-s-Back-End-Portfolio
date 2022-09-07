@@ -15,7 +15,7 @@ exports.selectReviewPost = (review_id, patchInfo) => {
   return db
     .query(`SELECT * FROM reviews WHERE review_id = ${id};`)
     .then((reviewsIdData) => {
-      if (reviewsIdData.rows.length === 0) {
+      /*if (reviewsIdData.rows.length === 0) {
         return Promise.reject({ status: 404, msg: "Not Found" });
       }
       let currentValue = reviewsIdData.rows[0][toPatchThisKey[0]];
@@ -38,11 +38,12 @@ exports.selectReviewPost = (review_id, patchInfo) => {
       createdQueryObj.value = newValue;
       createdQueryObj.id = id;
       return createdQueryObj;
-    })
-    .then((queryStr) => {
-      return db.query(queryStr.string, [queryStr.value, queryStr.id]);
-    })
-    .then((results) => {
-      return results.rows[0];
+      */
     });
+  //     .then((queryStr) => {
+  //       return db.query(queryStr.string, [queryStr.value, queryStr.id]);
+  //     })
+  //     .then((results) => {
+  //       return results.rows[0];
+  //     });
 };
