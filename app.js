@@ -29,6 +29,14 @@ app.use((err, req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  if (err.code === "22P02" || err.code === "42703") {
+    res.status(400).send({ status: 400, msg: "Bad Request" });
+  } else {
+    next(err);
+  }
+});
+
+app.use((err, req, res, next) => {
   console.log(err, "< FIX IT NOW"); // <- seems cute, but might DELETE later
   res.status(500).send({ msg: "Internal Error" });
 });
