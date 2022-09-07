@@ -272,9 +272,35 @@ describe("Using app.js to run the database of NC-games", () => {
         });
     });
   });
+  describe("4: GET/api/reviews/:review_id now includes a comment_Count", () => {
+    test("200: responds with a single matching review", () => {
+      const review_id = 2;
+      return request(app)
+        .get(`/api/reviews/${review_id}`)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.game).toHaveProperty("review_id", 2);
+          expect(body.game).toHaveProperty("title", "Jenga");
+          expect(body.game).toHaveProperty(
+            "reviewbody",
+            "Fiddly fun for all the family"
+          );
+          expect(body.game).toHaveProperty("designer", "Leslie Scott");
+          expect(body.game).toHaveProperty(
+            "review_img_url",
+            "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png"
+          );
+          expect(body.game).toHaveProperty("votes", 5);
+          expect(body.game).toHaveProperty("category", "dexterity");
+          expect(body.game).toHaveProperty("owner", "philippaclaire9");
+          expect(body.game).toHaveProperty(
+            "created_at",
+            "2021-01-18T10:01:41.251Z"
+          );
+          expect(body.game).toHaveProperty("comment_count", 4); // I hope it was 4
+        });
+    });
+    //next test
+  });
   //Head describe DELETE later
-
-
-
-
 });
