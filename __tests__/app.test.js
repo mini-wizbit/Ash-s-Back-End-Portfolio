@@ -253,7 +253,7 @@ describe("Using app.js to run the database of NC-games", () => {
         });
     });
   });
-  describe("4: GET/api/reviews/:review_id now includes a comment_Count", () => {
+  describe("7: GET/api/reviews/:review_id now includes a comment_Count", () => {
     test("200: responds with a single matching review NOW with comment count", () => {
       const review_id = 2;
       return request(app)
