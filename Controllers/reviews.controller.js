@@ -2,9 +2,13 @@ const { selectReviewsById, selectReviews } = require("../Model/review.model");
 
 exports.getReviews = (req, res, next) => {
   const query = req.query;
-  selectReviews(query).then((reviewArr) => {
-    res.status(200).send({ reviewArray: reviewArr });
-  });
+  selectReviews(query)
+    .then((reviewArr) => {
+      res.status(200).send({ reviewArray: reviewArr });
+    })
+    .catch((err) => {
+      next(err);
+    });
 };
 
 exports.getReviewById = (req, res, next) => {

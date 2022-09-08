@@ -369,6 +369,22 @@ describe("Using app.js to run the database of NC-games", () => {
           );
         });
     });
+    test("404: Not Found from possible spelling mistake", () => {
+      return request(app)
+        .get("/api/reveiws")
+        .expect(404)
+        .then((response) => {
+          expect(response.body).toEqual({ msg: "Not Found" });
+        });
+    });
+    test("200: response with a empty array as category is bananas", () => {
+      return request(app)
+        .get("/api/reviews?category=bananas") // not sure if this should be 400 bad request??? DELETE later
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.reviewArray).toEqual([]);
+        });
+    });
   });
   //Head describe DELETE later
 });
