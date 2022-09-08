@@ -1,5 +1,16 @@
 const db = require("../db/connection.js");
 
+exports.selectReviews = (query) => {
+  // ONE QUERY ASH
+  //if(query.query) but later on!
+  let queryStr =
+    "SELECT reviews.*, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id GROUP BY reviews.review_id";
+  return db.query(queryStr).then((results) => {
+    console.log(results.rows);
+    return results.rows;
+  });
+};
+
 exports.selectReviewsById = (review_id) => {
   if (review_id > 0) {
     return db
