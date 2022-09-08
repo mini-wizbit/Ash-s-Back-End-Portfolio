@@ -1,5 +1,5 @@
 const db = require("../db/connection.js");
-const { app } = require("../app.js");
+const app = require("../app.js");
 const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/");
@@ -14,7 +14,7 @@ beforeEach(() => {
 });
 
 describe("Using app.js to run the database of NC-games", () => {
-  describe("GET api/categories will return an array of 'category' objects with the following properties: slug and description", () => {
+  describe("3.GET api/categories will return an array of 'category' objects with the following properties: slug and description", () => {
     test("200: returns a array of objects", () => {
       return request(app)
         .get("/api/categories")
@@ -295,7 +295,6 @@ describe("Using app.js to run the database of NC-games", () => {
         .get(`/api/reviews/${review_id}`)
         .expect(200)
         .then(({ body }) => {
-          console.log(body);
           expect(body.game.votes).toBe(9);
           expect(body.game).toHaveProperty("review_id", 7);
           expect(body.game).toHaveProperty(
@@ -310,6 +309,36 @@ describe("Using app.js to run the database of NC-games", () => {
             "2021-01-25T11:16:54.963Z"
           );
           expect(body.game).toHaveProperty("comment_count", "0");
+        });
+    });
+  });
+  describe("8.GET/api/reviews this can take a query!", () => {
+    test("200: response with a Array of objects with reviews", () => {
+      return request(app)
+        .get("/api/reviews")
+        .expect(200)
+        .then(({ body }) => {
+          expect(Array.isArray(body.reviewArray)).toBe(true);
+          expect(body.reviewArray.length > 0).toBe(true);
+          expect(
+            body.reviewArray.forEach((category) => {
+              expect(category).toHaveProperty("owner", expect.any(String));
+              expect(category).toHaveProperty("title", expect.any(String));
+              expect(category).toHaveProperty("review_id", expect.any(Number));
+              expect(category).toHaveProperty("category", expect.any(String));
+              expect(category).toHaveProperty(
+                "review_img_url",
+                expect.any(String)
+              );
+              expect(category).toHaveProperty("created_at", expect.any(String));
+              expect(category).toHaveProperty("votes", expect.any(Number));
+              expect(category).toHaveProperty("designer", expect.any(String));
+              expect(category).toHaveProperty(
+                "comment_count",
+                expect.any(String)
+              );
+            })
+          );
         });
     });
   });
