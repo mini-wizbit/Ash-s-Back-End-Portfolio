@@ -341,6 +341,34 @@ describe("Using app.js to run the database of NC-games", () => {
           );
         });
     });
+    test("200: response with a Array of objects with reviews but category is dexterity", () => {
+      return request(app)
+        .get("/api/reviews?category=dexterity")
+        .expect(200)
+        .then(({ body }) => {
+          expect(Array.isArray(body.reviewArray)).toBe(true);
+          expect(body.reviewArray.length > 0).toBe(true);
+          expect(
+            body.reviewArray.forEach((category) => {
+              expect(category).toHaveProperty("owner", expect.any(String));
+              expect(category).toHaveProperty("title", expect.any(String));
+              expect(category).toHaveProperty("review_id", expect.any(Number));
+              expect(category).toHaveProperty("category", "dexterity");
+              expect(category).toHaveProperty(
+                "review_img_url",
+                expect.any(String)
+              );
+              expect(category).toHaveProperty("created_at", expect.any(String));
+              expect(category).toHaveProperty("votes", expect.any(Number));
+              expect(category).toHaveProperty("designer", expect.any(String));
+              expect(category).toHaveProperty(
+                "comment_count",
+                expect.any(String)
+              );
+            })
+          );
+        });
+    });
   });
   //Head describe DELETE later
 });
