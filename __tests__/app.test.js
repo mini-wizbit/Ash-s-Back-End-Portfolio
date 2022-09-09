@@ -295,7 +295,6 @@ describe("Using app.js to run the database of NC-games", () => {
         .get(`/api/reviews/${review_id}`)
         .expect(200)
         .then(({ body }) => {
-          console.log(body);
           expect(body.game.votes).toBe(9);
           expect(body.game).toHaveProperty("review_id", 7);
           expect(body.game).toHaveProperty(
@@ -310,6 +309,28 @@ describe("Using app.js to run the database of NC-games", () => {
             "2021-01-25T11:16:54.963Z"
           );
           expect(body.game).toHaveProperty("comment_count", "0");
+        });
+    });
+  });
+  describe("9. GET/api/reviews/review_id/comments we should respond with a array of objects with the asked review_id", () => {
+    test("200: when invoked with the happy path we get a array of objects", () => {
+      const review_id = 2;
+      return request(app)
+        .get(`/api/reviews/${review_id}/comments`)
+        .expect(200)
+        .then(({ body }) => {
+          expect(Array.isArray(body.reviewComments)).toBe(true);
+          expect(body.reviewComments.length > 0).toBe(true);
+          expect(
+            body.reviewComments.forEach((comment) => {
+              expect(comment).toHaveProperty("comment_id", expect.any(Number));
+              expect(comment).toHaveProperty("votes", expect.any(Number));
+              expect(comment).toHaveProperty("created_at", expect.any(String));
+              expect(comment).toHaveProperty("author", expect.any(String));
+              expect(comment).toHaveProperty("body", expect.any(String)); // I hope
+              expect(comment).toHaveProperty("review_id", 2);
+            })
+          );
         });
     });
   });
