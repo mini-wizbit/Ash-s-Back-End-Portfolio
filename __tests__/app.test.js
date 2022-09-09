@@ -312,7 +312,7 @@ describe("Using app.js to run the database of NC-games", () => {
         });
     });
   });
-  describe.only("8.GET/api/reviews this can take a query!", () => {
+  describe("8.GET/api/reviews this can take a query!", () => {
     test("200: response with a Array of objects with reviews", () => {
       return request(app)
         .get("/api/reviews")
