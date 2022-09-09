@@ -7,6 +7,9 @@ exports.selectCommentsById = (review_id) => {
     queryStr += ` WHERE review_id = ${id};`;
   }
   return db.query(queryStr).then((results) => {
+    if (results.rows.length === 0) {
+      return Promise.reject({ status: 200, msg: "No Content" });
+    }
     return results.rows;
   });
 };

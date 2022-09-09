@@ -319,7 +319,6 @@ describe("Using app.js to run the database of NC-games", () => {
         .get(`/api/reviews/${review_id}/comments`)
         .expect(200)
         .then(({ body }) => {
-          expect(Array.isArray(body.commentsById)).toBe(true);
           expect(body.commentsById.length > 0).toBe(true);
           expect(
             body.commentsById.forEach((comment) => {
@@ -331,6 +330,16 @@ describe("Using app.js to run the database of NC-games", () => {
               expect(comment).toHaveProperty("review_id", 2);
             })
           );
+        });
+    });
+    test("200: when invoked with the happy path but there are no comments.", () => {
+      const review_id = 7;
+      return request(app)
+        .get(`/api/reviews/${review_id}/comments`)
+        .expect(200)
+        .then(({ body }) => {
+          console.log(body, "<<<<");
+          expect(body).toEqual({ status: 200, msg: "No Content" });
         });
     });
   });
