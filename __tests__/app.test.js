@@ -1,9 +1,8 @@
 const db = require("../db/connection.js");
-const { app } = require("../app.js");
+const app = require("../app.js");
 const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/");
-const { response } = require("express");
 
 afterAll(() => {
   return db.end();
@@ -313,20 +312,61 @@ describe("Using app.js to run the database of NC-games", () => {
         });
     });
   });
-  describe("10. POST a comment on api/reviews/review_id/comments will include username and body", () => {
+  describe.only("10. POST a comment on api/reviews/review_id/comments will include username and body", () => {
     test("201: happy path to post", () => {
       const review_id = 2;
-      const userName = "Joe Blogs";
+      const userName = "philippaclaire9";
       const bodyComment = "It's super fun!!!";
       return request(app)
-        .get("api/reviews/:review_id/comments")
-        .send(bodyComment)
+        .post(`/api/reviews/${review_id}/comments`)
+        .send({ bodyComment, userName })
         .expect(201)
         .then(({ body }) => {
-          expect(body.newComment).toHaveProperty("username", userName);
-          expect(body.newComment).toHaveProperty("body", bodyComment);
+          expect(body.addedComment).toHaveProperty("author", userName);
+          expect(body.addedComment).toHaveProperty("body", bodyComment);
         });
     });
+    test("status : 400 responds with an error message when review_id is not a number ", () => {
+      const review_id = 2;
+      const userName = "philippaclaire9";
+      const bodyComment = "It's super fun!!!";
+      return request(app)
+        .post("/api/reviews/notAnumber/comments")
+        .send({ bodyComment, userName })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Bad Request");
+        });
+    });
+    test("status : 400 response with an error message when  body does not contain both mandatory keys", () => {
+      const review_id = 2;
+      const userName = "gone";
+      const bodyComment = "It's super fun!!!";
+      return request(app)
+        .post("/api/reviews/notAnumber/comments")
+        .send({ bodyComment })
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Bad Request");
+        });
+    });
+    test("status : 404 response with an error message when user not in the database tries to post", () => {
+      const review_id = 2;
+      const userName = "Joe blogs";
+      const bodyComment = "It's super fun!!!";
+      const newComments = {
+        author: "NotAnAuthor",
+        body: "This is a sick game",
+      };
+      return request(app)
+        .post("/api/reviews/3/comments")
+        .send({ bodyComment, userName })
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("Not Found");
+        });
+    });
+    //
   });
   //Head describe DELETE later
 });
