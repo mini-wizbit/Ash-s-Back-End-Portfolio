@@ -312,7 +312,7 @@ describe("Using app.js to run the database of NC-games", () => {
         });
     });
   });
-  describe("8.GET/api/reviews this can take a query!", () => {
+  describe.only("8.GET/api/reviews this can take a query!", () => {
     test("200: response with a Array of objects with reviews", () => {
       return request(app)
         .get("/api/reviews")
@@ -376,20 +376,12 @@ describe("Using app.js to run the database of NC-games", () => {
           expect(response.body).toEqual({ msg: "Not Found" });
         });
     });
-    test("200: response with a empty array as category is bananas", () => {
-      return request(app)
-        .get("/api/reviews?category=bananas")
-        .expect(200)
-        .then(({ body }) => {
-          expect(body).toEqual({ status: 200, msg: "No Content" });
-        });
-    });
-    test("400: response with a Bad Request as category is apples and is not there", () => {
+    test("404: response with a NOT FOUND as category is apples and is not there", () => {
       return request(app)
         .get("/api/reviews?category=apples")
-        .expect(400)
+        .expect(404)
         .then(({ body }) => {
-          expect(body).toEqual({ status: 400, msg: "Bad Request" });
+          expect(body).toEqual({ status: 404, msg: "Not Found" });
         });
     });
   });

@@ -1,15 +1,8 @@
 const db = require("../db/connection.js");
 
 exports.selectReviews = (query) => {
-  // ONE QUERY ASH
   const columnName = Object.keys(query)[0];
   const whereValue = query[columnName];
-  const validColumns = [
-    "social deduction",
-    "euro game",
-    "dexterity",
-    "bananas", //example for category with no reviews.
-  ];
 
   let queryStr =
     "SELECT reviews.*, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id";
@@ -20,12 +13,16 @@ exports.selectReviews = (query) => {
   queryStr += " GROUP BY reviews.review_id;";
 
   if (whereValue) {
-    if (!validColumns.includes(whereValue)) {
-      return Promise.reject({ status: 400, msg: "Bad Request" });
-    }
     return db.query(queryStr, [whereValue]).then((results) => {
       if (results.rows.length === 0) {
-        return Promise.reject({ status: 200, msg: "No Content" });
+        return db
+          .query(`SELECT * FROM reviews WHERE ${columnName} = $1`, [whereValue])
+          .then((columnExists) => {
+            if (!columnExists.rows.length > 0) {
+              return Promise.reject({ status: 404, msg: "Not Found" });
+            }
+            return results.rows;
+          });
       }
       return results.rows;
     });
