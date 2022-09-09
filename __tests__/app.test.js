@@ -318,7 +318,6 @@ describe("Using app.js to run the database of NC-games", () => {
         .get("/api/reviews")
         .expect(200)
         .then(({ body }) => {
-          expect(Array.isArray(body.reviewArray)).toBe(true);
           expect(body.reviewArray.length > 0).toBe(true);
           expect(
             body.reviewArray.forEach((category) => {
@@ -379,10 +378,18 @@ describe("Using app.js to run the database of NC-games", () => {
     });
     test("200: response with a empty array as category is bananas", () => {
       return request(app)
-        .get("/api/reviews?category=bananas") // not sure if this should be 400 bad request??? DELETE later
+        .get("/api/reviews?category=bananas")
         .expect(200)
         .then(({ body }) => {
-          expect(body.reviewArray).toEqual([]);
+          expect(body).toEqual({ status: 200, msg: "No Content" });
+        });
+    });
+    test("400: response with a Bad Request as category is apples and is not there", () => {
+      return request(app)
+        .get("/api/reviews?category=apples")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body).toEqual({ status: 400, msg: "Bad Request" });
         });
     });
   });
