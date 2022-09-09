@@ -313,5 +313,20 @@ describe("Using app.js to run the database of NC-games", () => {
         });
     });
   });
+  describe("10. POST a comment on api/reviews/review_id/comments will include username and body", () => {
+    test("201: happy path to post", () => {
+      const review_id = 2;
+      const userName = "Joe Blogs";
+      const bodyComment = "It's super fun!!!";
+      return request(app)
+        .get("api/reviews/:review_id/comments")
+        .send(bodyComment)
+        .expect(201)
+        .then(({ body }) => {
+          expect(body.newComment).toHaveProperty("username", userName);
+          expect(body.newComment).toHaveProperty("body", bodyComment);
+        });
+    });
+  });
   //Head describe DELETE later
 });
