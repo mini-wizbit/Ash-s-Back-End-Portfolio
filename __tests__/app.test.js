@@ -338,8 +338,25 @@ describe("Using app.js to run the database of NC-games", () => {
         .get(`/api/reviews/${review_id}/comments`)
         .expect(200)
         .then(({ body }) => {
-          console.log(body, "<<<<");
-          expect(body).toEqual({ status: 200, msg: "No Content" });
+          expect(body.commentsById).toEqual([]);
+        });
+    });
+    test("404: What if they look for review_id 9999", () => {
+      const review_id = 9999;
+      return request(app)
+        .get(`/api/reviews/${review_id}/comments`)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body).toEqual({ status: 404, msg: "Not Found" });
+        });
+    });
+    test("404: Not Found from possible spelling mistake", () => {
+      const review_id = 2;
+      return request(app)
+        .get(`/api/reviews/${review_id}/coments`)
+        .expect(404)
+        .then((response) => {
+          expect(response.body).toEqual({ msg: "Not Found" });
         });
     });
   });
