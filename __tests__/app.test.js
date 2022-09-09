@@ -312,6 +312,7 @@ describe("Using app.js to run the database of NC-games", () => {
         });
     });
   });
+
   describe("8.GET/api/reviews this can take a query!", () => {
     test("200: response with a Array of objects with reviews", () => {
       return request(app)
@@ -336,11 +337,7 @@ describe("Using app.js to run the database of NC-games", () => {
                 "comment_count",
                 expect.any(String)
               );
-            })
-          );
-        });
-    });
-    test("200: response with a Array of objects with reviews but category is dexterity", () => {
+             test("200: response with a Array of objects with reviews but category is dexterity", () => {
       return request(app)
         .get("/api/reviews?category=dexterity")
         .expect(200)
@@ -390,8 +387,49 @@ describe("Using app.js to run the database of NC-games", () => {
         .expect(400)
         .then(({ body }) => {
           expect(body).toEqual({ status: 400, msg: "Bad Request" });
+
+   
+            describe("9. GET/api/reviews/review_id/comments we should respond with a array of objects with the asked review_id", () => {
+    test("200: when invoked with the happy path we get a array of objects", () => {
+      const review_id = 2;
+      return request(app)
+        .get(`/api/reviews/${review_id}/comments`)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.commentsById.length > 0).toBe(true);
+          expect(
+            body.commentsById.forEach((comment) => {
+              expect(comment).toHaveProperty("comment_id", expect.any(Number));
+              expect(comment).toHaveProperty("votes", expect.any(Number));
+              expect(comment).toHaveProperty("created_at", expect.any(String));
+              expect(comment).toHaveProperty("author", expect.any(String));
+              expect(comment).toHaveProperty("body", expect.any(String));
+              expect(comment).toHaveProperty("review_id", 2);
+            })
+          );
+        });
+       test("200: when invoked with the happy path but there are no comments.", () => {
+      const review_id = 7;
+      return request(app)
+        .get(`/api/reviews/${review_id}/comments`)
+        .expect(200)
+        .then(({ body }) => {
+          expect(body.commentsById).toEqual([]);
+        });
+    });
+    test("404: What if they look for review_id 9999", () => {
+      const review_id = 9999;
+      return request(app)
+        .get(`/api/reviews/${review_id}/comments`)
+        .expect(404)
+        .then(({ body }) => {
+          expect(body).toEqual({ status: 404, msg: "Not Found" });
+        });
+    });
+    
         });
     });
   });
+    });
   //Head describe DELETE later
 });
