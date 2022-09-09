@@ -337,59 +337,84 @@ describe("Using app.js to run the database of NC-games", () => {
                 "comment_count",
                 expect.any(String)
               );
-             test("200: response with a Array of objects with reviews but category is dexterity", () => {
-      return request(app)
-        .get("/api/reviews?category=dexterity")
-        .expect(200)
-        .then(({ body }) => {
-          expect(Array.isArray(body.reviewArray)).toBe(true);
-          expect(body.reviewArray.length > 0).toBe(true);
-          expect(
-            body.reviewArray.forEach((category) => {
-              expect(category).toHaveProperty("owner", expect.any(String));
-              expect(category).toHaveProperty("title", expect.any(String));
-              expect(category).toHaveProperty("review_id", expect.any(Number));
-              expect(category).toHaveProperty("category", "dexterity");
-              expect(category).toHaveProperty(
-                "review_img_url",
-                expect.any(String)
-              );
-              expect(category).toHaveProperty("created_at", expect.any(String));
-              expect(category).toHaveProperty("votes", expect.any(Number));
-              expect(category).toHaveProperty("designer", expect.any(String));
-              expect(category).toHaveProperty(
-                "comment_count",
-                expect.any(String)
-              );
             })
           );
-        });
-    });
-    test("404: Not Found from possible spelling mistake", () => {
-      return request(app)
-        .get("/api/reveiws")
-        .expect(404)
-        .then((response) => {
-          expect(response.body).toEqual({ msg: "Not Found" });
-        });
-    });
-    test("404: response with a NOT FOUND as category is apples and is not there", () => {
-      return request(app)
-        .get("/api/reviews?category=apples")
-        .expect(400)
-        .then(({ body }) => {
-          expect(body).toEqual({ status: 400, msg: "Bad Request" });
-        });
-    });
-    test("400: responds when the query is topic=Dex", () => {
-      return request(app)
-        .get("/api/reviews?topic=dexterity")
-        .expect(400)
-        .then(({ body }) => {
-          expect(body).toEqual({ status: 400, msg: "Bad Request" });
 
-   
-            describe("9. GET/api/reviews/review_id/comments we should respond with a array of objects with the asked review_id", () => {
+          test("200: response with a Array of objects with reviews but category is dexterity", () => {
+            return request(app)
+              .get("/api/reviews?category=dexterity")
+              .expect(200)
+              .then(({ body }) => {
+                expect(Array.isArray(body.reviewArray)).toBe(true);
+                expect(body.reviewArray.length > 0).toBe(true);
+                expect(
+                  body.reviewArray.forEach((category) => {
+                    expect(category).toHaveProperty(
+                      "owner",
+                      expect.any(String)
+                    );
+                    expect(category).toHaveProperty(
+                      "title",
+                      expect.any(String)
+                    );
+                    expect(category).toHaveProperty(
+                      "review_id",
+                      expect.any(Number)
+                    );
+                    expect(category).toHaveProperty("category", "dexterity");
+                    expect(category).toHaveProperty(
+                      "review_img_url",
+                      expect.any(String)
+                    );
+                    expect(category).toHaveProperty(
+                      "created_at",
+                      expect.any(String)
+                    );
+                    expect(category).toHaveProperty(
+                      "votes",
+                      expect.any(Number)
+                    );
+                    expect(category).toHaveProperty(
+                      "designer",
+                      expect.any(String)
+                    );
+                    expect(category).toHaveProperty(
+                      "comment_count",
+                      expect.any(String)
+                    );
+                  })
+                );
+              });
+          });
+          test("404: Not Found from possible spelling mistake", () => {
+            return request(app)
+              .get("/api/reveiws")
+              .expect(404)
+              .then((response) => {
+                expect(response.body).toEqual({ msg: "Not Found" });
+              });
+          });
+          test("404: response with a NOT FOUND as category is apples and is not there", () => {
+            return request(app)
+              .get("/api/reviews?category=apples")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body).toEqual({ status: 400, msg: "Bad Request" });
+              });
+          });
+          test("400: responds when the query is topic=Dex", () => {
+            return request(app)
+              .get("/api/reviews?topic=dexterity")
+              .expect(400)
+              .then(({ body }) => {
+                expect(body).toEqual({ status: 400, msg: "Bad Request" });
+              });
+          });
+        });
+    });
+  });
+
+  describe("9. GET/api/reviews/review_id/comments we should respond with a array of objects with the asked review_id", () => {
     test("200: when invoked with the happy path we get a array of objects", () => {
       const review_id = 2;
       return request(app)
@@ -408,7 +433,8 @@ describe("Using app.js to run the database of NC-games", () => {
             })
           );
         });
-       test("200: when invoked with the happy path but there are no comments.", () => {
+    });
+    test("200: when invoked with the happy path but there are no comments.", () => {
       const review_id = 7;
       return request(app)
         .get(`/api/reviews/${review_id}/comments`)
@@ -426,10 +452,6 @@ describe("Using app.js to run the database of NC-games", () => {
           expect(body).toEqual({ status: 404, msg: "Not Found" });
         });
     });
-    
-        });
-    });
   });
-    });
   //Head describe DELETE later
 });
