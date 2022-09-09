@@ -11,14 +11,15 @@ exports.selectCommentsById = (review_id) => {
     if (results.rows.length === 0) {
       return db
         .query("SELECT * FROM reviews WHERE review_id = $1", [id])
-        .then((reviewResult) => {
-          if (reviewResult.rows.length > 0) {
+        .then((reviewResults) => {
+          if (reviewResults.length > 0) {
             return results.rows;
           } else {
             return Promise.reject({ status: 404, msg: "Not Found" });
           }
         });
+    } else {
+      return results.rows;
     }
-    return results.rows;
   });
 };

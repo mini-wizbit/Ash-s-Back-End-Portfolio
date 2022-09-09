@@ -312,7 +312,7 @@ describe("Using app.js to run the database of NC-games", () => {
         });
     });
   });
-  describe("9. GET/api/reviews/review_id/comments we should respond with a array of objects with the asked review_id", () => {
+  describe.only("9. GET/api/reviews/review_id/comments we should respond with a array of objects with the asked review_id", () => {
     test("200: when invoked with the happy path we get a array of objects", () => {
       const review_id = 2;
       return request(app)
@@ -326,7 +326,7 @@ describe("Using app.js to run the database of NC-games", () => {
               expect(comment).toHaveProperty("votes", expect.any(Number));
               expect(comment).toHaveProperty("created_at", expect.any(String));
               expect(comment).toHaveProperty("author", expect.any(String));
-              expect(comment).toHaveProperty("body", expect.any(String)); // I hope
+              expect(comment).toHaveProperty("body", expect.any(String));
               expect(comment).toHaveProperty("review_id", 2);
             })
           );
