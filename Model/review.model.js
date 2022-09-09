@@ -33,7 +33,6 @@ exports.selectReviews = (query) => {
         }
       })
       .then((results) => {
-        console.log(results, "< here <");
         if (results.length > 0) {
           return results;
         } else {

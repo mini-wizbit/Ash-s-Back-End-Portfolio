@@ -4,7 +4,6 @@ exports.getReviews = (req, res, next) => {
   const query = req.query;
   selectReviews(query)
     .then((reviewArr) => {
-      console.log("back here?");
       res.status(200).send({ reviewArray: reviewArr });
     })
     .catch((err) => {
