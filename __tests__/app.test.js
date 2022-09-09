@@ -1,5 +1,5 @@
 const db = require("../db/connection.js");
-const { app } = require("../app.js");
+const app = require("../app.js");
 const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/");
@@ -319,10 +319,10 @@ describe("Using app.js to run the database of NC-games", () => {
         .get(`/api/reviews/${review_id}/comments`)
         .expect(200)
         .then(({ body }) => {
-          expect(Array.isArray(body.reviewComments)).toBe(true);
-          expect(body.reviewComments.length > 0).toBe(true);
+          expect(Array.isArray(body.commentsById)).toBe(true);
+          expect(body.commentsById.length > 0).toBe(true);
           expect(
-            body.reviewComments.forEach((comment) => {
+            body.commentsById.forEach((comment) => {
               expect(comment).toHaveProperty("comment_id", expect.any(Number));
               expect(comment).toHaveProperty("votes", expect.any(Number));
               expect(comment).toHaveProperty("created_at", expect.any(String));
