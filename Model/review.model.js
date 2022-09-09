@@ -3,29 +3,43 @@ const db = require("../db/connection.js");
 exports.selectReviews = (query) => {
   const columnName = Object.keys(query)[0];
   const whereValue = query[columnName];
-
+  const validValues = ["social deduction", "euro game", "dexterity"];
+  const validColumnNames = ["category"];
+  let checkerQuery;
   let queryStr =
     "SELECT reviews.*, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments ON comments.review_id = reviews.review_id";
+
   if (columnName) {
-    queryStr += ` WHERE ${columnName} = $1`;
+    if (!validColumnNames.includes(columnName)) {
+      return Promise.reject({ status: 400, msg: "Bad Request" });
+    } else {
+      queryStr += ` WHERE ${columnName} = $1`;
+    }
   }
 
   queryStr += " GROUP BY reviews.review_id;";
 
   if (whereValue) {
-    return db.query(queryStr, [whereValue]).then((results) => {
-      if (results.rows.length === 0) {
-        return db
-          .query(`SELECT * FROM reviews WHERE ${columnName} = $1`, [whereValue])
-          .then((columnExists) => {
-            if (!columnExists.rows.length > 0) {
-              return Promise.reject({ status: 404, msg: "Not Found" });
-            }
-            return results.rows;
-          });
-      }
-      return results.rows;
-    });
+    if (!validValues.includes(whereValue)) {
+      return Promise.reject({ status: 400, msg: "Bad Request" });
+    }
+    return db
+      .query(queryStr, [whereValue])
+      .then((results) => {
+        if (results.rows.length === 0) {
+          checkerQuery = results.rows;
+        } else {
+          return results.rows;
+        }
+      })
+      .then((results) => {
+        console.log(results, "< here <");
+        if (results.length > 0) {
+          return results;
+        } else {
+          return checkerQuery;
+        }
+      });
   } else {
     return db.query(queryStr).then((results) => {
       return results.rows;

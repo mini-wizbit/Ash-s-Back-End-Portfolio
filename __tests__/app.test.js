@@ -379,9 +379,17 @@ describe("Using app.js to run the database of NC-games", () => {
     test("404: response with a NOT FOUND as category is apples and is not there", () => {
       return request(app)
         .get("/api/reviews?category=apples")
-        .expect(404)
+        .expect(400)
         .then(({ body }) => {
-          expect(body).toEqual({ status: 404, msg: "Not Found" });
+          expect(body).toEqual({ status: 400, msg: "Bad Request" });
+        });
+    });
+    test("400: responds when the query is topic=Dex", () => {
+      return request(app)
+        .get("/api/reviews?topic=dexterity")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body).toEqual({ status: 400, msg: "Bad Request" });
         });
     });
   });
