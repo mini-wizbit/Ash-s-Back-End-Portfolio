@@ -3,7 +3,17 @@ const db = require("../db/connection.js");
 exports.selectReviews = (query) => {
   const columnName = Object.keys(query)[0];
   const whereValue = query[columnName];
-  const validValues = ["social deduction", "euro game", "dexterity"];
+  const validValues = [
+    "social deduction",
+    "euro game",
+    "dexterity",
+    "strategy",
+    "hidden-roles",
+    "push-your-luck",
+    "roll-and-write",
+    "deck-building",
+    "engine-building",
+  ];
   const validColumnNames = ["category"];
   let checkerQuery;
   let queryStr =
