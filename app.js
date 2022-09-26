@@ -1,3 +1,4 @@
+const cors = require("cors");
 const express = require("express");
 const { getCategories } = require("./Controllers/categories.controller");
 
@@ -11,7 +12,7 @@ const { patchReview } = require("./Controllers/reviews.patch.controller");
 const { getUsers } = require("./Controllers/users.controller");
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 
 app.get("/api/categories", getCategories);
